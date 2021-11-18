@@ -4,11 +4,12 @@ import styled from "styled-components";
 import Spinner from "../Spinner";
 import Validate from "../../services/validate";
 import Alert from "../Alert";
+import Sign from "../../services/sign.js";
+import { useNavigate } from "react-router-dom";
 
 export default function Signup(props) {
     const [ openAlert, setOpenAlert ] = useState(false)
     const [ alertMessage, setAlertMessage ] = useState(false)
-
     const [ name, setname ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
@@ -21,11 +22,30 @@ export default function Signup(props) {
             email,
             password
         })
-        if(!validationResult.isValid) {
+
+        if(password !== passwordConfirmation) {
             setOpenAlert(true)
-            setAlertMessage(validationResult.message)
+            setAlertMessage("A confirmação de senha não está igual à senha")
+            return;
         }
-        else alert("funfou")
+
+        if(!validationResult.isValid) {
+            setAlertMessage(validationResult.message)
+            setOpenAlert(true)
+            return;
+        }
+
+        setIsLoading(true)
+        Sign.Up({name, email, password})
+            .then(res => {
+                if(res.succeeded) {
+                    props.toggle()
+                } else {
+                    setAlertMessage(res.message)
+                    setOpenAlert(true)
+                    setIsLoading(false)
+                }
+            })
     }
 
     return (

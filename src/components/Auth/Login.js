@@ -1,26 +1,51 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import Validate from "../../services/validate";
 import Spinner from "../Spinner";
 import Alert from "../Alert";
+import Sign from "../../services/sign.js";
+import UserContext from "../context/UserContext";
+import { useNavigate } from "react-router";
 
 export default function Login(props) {
+    const navigate = useNavigate();
     const [ openAlert, setOpenAlert ] = useState(false);
+    const [ alertMessage, setAlertMessage ] = useState("")
     const [ isLoading, setIsLoading ] = useState(false);
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
+    const { setUserData, storeUserDataLocally } = useContext(UserContext);
 
     function log() {
         const validation = Validate.emptyness({
             email,
             password
         })
+
         if(!validation.isValid) {
+            setAlertMessage("Preencha todos os zen, digo, campos")
             setOpenAlert(true)
             return;
         }
 
+        setIsLoading(true)
+
+        Sign.In({
+            email,
+            password
+        })
+        .then(res => {
+            if(res.succeeded) {
+                storeUserDataLocally(res.data);
+                setUserData(res.data);
+                navigate("/main");
+            } else {
+                setAlertMessage("Usuário inválido ou ingrato")
+                setOpenAlert(true)
+                setIsLoading(false)
+            }
+        })
     }
 
     return (
@@ -37,7 +62,7 @@ export default function Login(props) {
                 }
             }}
         >
-            <Alert isOpen={openAlert} toggle={setOpenAlert} message="Preencha todos os zen, digo, campos" />
+            <Alert isOpen={openAlert} toggle={setOpenAlert} message={alertMessage} />
             <Title>Bom te ver de novo!</Title>
             <input 
                 type="email"

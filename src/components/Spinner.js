@@ -1,10 +1,10 @@
 import { CgSpinnerAlt } from 'react-icons/cg';
 import styled from 'styled-components';
 
-export default function Spinner({ color }) {
+export default function Spinner({ color, size }) {
     return (
         <SpinnerContainer>
-            <CgSpinnerAlt className="spinner" size={25} color={color ? color : "#8C11BE"}/>
+            <CgSpinnerAlt className="spinner" size={ size ? size : 25} color={color ? color : "#8C11BE"}/>
         </SpinnerContainer>
     )
 }

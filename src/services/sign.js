@@ -1,9 +1,8 @@
-import { CgFormatUnderline } from "react-icons/cg"
-import Api from "./Api.js"
+import Api from "./api.js"
 
-const Auth = {
-    login,
-    register
+const Sign = {
+    In,
+    Up
 }
 
 function createHeader(token) {
@@ -14,9 +13,9 @@ function createHeader(token) {
     }
 }
 
-async function login(body) {
+async function In(body) {
     try {
-        const response = Api.post("/login", body)
+        const response = await Api.post("/login", body)
 
         return {
             succeeded: true,
@@ -30,9 +29,9 @@ async function login(body) {
     }
 }
 
-async function register(body) {
+async function Up(body) {
     try {
-        const response = Api.post("/register", body)
+        const response = await Api.post("/register", body)
 
         return {
             succeeded: true,
@@ -45,3 +44,5 @@ async function register(body) {
         }
     }
 }
+
+export default Sign;

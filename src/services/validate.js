@@ -15,11 +15,11 @@ function registerBody(body) {
         isValid: false,
         message: "Uma andorinha não faz o verão, uma letra não faz um nome"
     }
-    if(!body.email.test(emailRegex)) return {
+    if(!emailRegex.test(body.email)) return {
         isValid: false,
         message: "Insira um e-mail zen"
     }
-    if(body.password.length <= 6) return {
+    if(body.password.length < 6) return {
         isValid: false,
         message: "Sua senha precisa ter ao menos 6 caracteres good vibes"
     }
