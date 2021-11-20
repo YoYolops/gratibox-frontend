@@ -1,11 +1,8 @@
 import styled from "styled-components";
-import Spinner from "./Spinner";
 import LoadingAnimation from "../assets/loadingAnimation.json";
 import Lottie from "react-lottie";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-
-console.log(LoadingAnimation)
 
 export default function LoadingPage() {
     const [ message, setMessage ] = useState("Aguarde")
@@ -22,7 +19,6 @@ export default function LoadingPage() {
         const timeoutId = setTimeout(() => {
             setMessage(messages[dotsQuantity%3])
             setDotsQuantity(prev => prev + 1)
-            console.log("interval")
         }, 1000)
 
         return () => { 

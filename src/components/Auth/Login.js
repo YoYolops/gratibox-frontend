@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import Validate from "../../services/validate";
@@ -16,6 +16,18 @@ export default function Login(props) {
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const { setUserData, storeUserDataLocally } = useContext(UserContext);
+    
+    const submitForm = useCallback(e => {
+        if(e.key === "Enter"){
+            log()
+        }
+    }, [ log ])
+
+    useEffect(()=> {
+        document.addEventListener("keydown", submitForm)   
+
+        return () => document.removeEventListener('keydown', submitForm) 
+    }, [ submitForm ])
 
     function log() {
         const validation = Validate.emptyness({

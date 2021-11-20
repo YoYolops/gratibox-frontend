@@ -30,6 +30,7 @@ async function In(body) {
 }
 
 async function Up(body) {
+
     try {
         const response = await Api.post("/register", body)
 

@@ -1,11 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { motion } from "framer-motion";
 import styled from "styled-components";
 import Spinner from "../Spinner";
 import Validate from "../../services/validate";
 import Alert from "../Alert";
 import Sign from "../../services/sign.js";
-import { useNavigate } from "react-router-dom";
 
 export default function Signup(props) {
     const [ openAlert, setOpenAlert ] = useState(false)
@@ -15,6 +14,18 @@ export default function Signup(props) {
     const [ password, setPassword ] = useState("");
     const [ passwordConfirmation, setPasswordConfirmation ] = useState("");
     const [ isLoading, setIsLoading ] = useState(false);
+    
+    const submitForm = useCallback(e => {
+        if(e.key === "Enter"){
+            register()
+        }
+    }, [ register ])
+
+    useEffect(()=> {
+        document.addEventListener("keydown", submitForm)   
+
+        return () => document.removeEventListener('keydown', submitForm) 
+    }, [ submitForm ])
 
     function register() {
         const validationResult = Validate.registerBody({
