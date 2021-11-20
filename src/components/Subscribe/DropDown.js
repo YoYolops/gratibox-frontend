@@ -79,12 +79,14 @@ const variants = {
 const bottomSectionVariants = {
     active: {
         opacity: 1,
+        pointerEvents: "unset",
         transition: {
             delay: .3,
         },
     },
     unactive: {
         opacity: 0,
+        pointerEvents: "none",
         transition: {
             duration: .1,
         },
