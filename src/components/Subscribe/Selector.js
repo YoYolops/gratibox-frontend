@@ -20,7 +20,6 @@ export default function Selector({ initialValue, onSelect, optionText, products,
             return counter
         }
         if(!unique) {
-            console.log(products)
             setAllowUnselect(calculateHowManyProductsAreSelected() > 1)
         }
     }, [ products ])

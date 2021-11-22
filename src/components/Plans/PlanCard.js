@@ -29,7 +29,7 @@ export default function PlanCard({ jsonAnimation, title, text, route }) {
             </div>
             <p>{text}</p>
             <SelectPlan
-                whileTap={{ scale: 0.98, backgroundColor: "#5969bf" }}
+                whileTap={{ scale: 0.98, backgroundColor: "#6D7CE4" }}
                 onClick={e => {
                     e.preventDefault()
                     navigate(route)
