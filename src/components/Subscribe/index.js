@@ -8,11 +8,15 @@ import UserContext from "../context/UserContext";
 import { useParams } from "react-router-dom";
 import SignCard from "./SignCard";
 import AddressCard from "./AddressCard";
+import Validate from "../../services/validate";
+import Alert from "../Alert";
+import Spinner from "../Spinner";
 
 export default function Subscribe() {
+    const [ isLoadingLocally, setIsLoadingLocally ] = useState(false)
+    const [ alertManagementData, setAlertManagementData ] = useState({ isActive: false, message: "" })
     const navigate = useNavigate();
     const { userData, isLoading } = useContext(UserContext)
-    const [ selectedPlanData, setSelectedPlanData ] = useState()
     const [ selectionStage, setSelectionStage ] = useState(0)
     const [ prevData, setPrevData ] = useState({ signCard: {}, addressCard: {} })
     const { type } = useParams();
@@ -22,7 +26,28 @@ export default function Subscribe() {
     }, [ navigate, userData, isLoading ])
 
     function submitSignatureRequest() {
-        
+        setIsLoadingLocally(true)
+        const mapableProducts = Object.keys(prevData.signCard.products)
+
+        const body = {
+            userId: userData.id,
+            addressee: prevData.addressCard.addressee,
+            planId: prevData.signCard.planType === "weekly" ? 1 : 0,
+            cep: prevData.addressCard.cep,
+            day: prevData.signCard.deliveryDay,
+            complement: prevData.addressCard.complement,
+            productId: mapableProducts.map(key => {
+                if(prevData.signCard.products[key].selected) return prevData.signCard.products[key].productId
+                return null;
+            }).filter(Boolean),
+        }
+
+        const emptinessValidation = Validate.emptyness(body)
+        if(!emptinessValidation.isValid) setAlertManagementData({
+            isActive: true,
+            message: "Preencha todos os campos obrigatórios"
+        })
+        setIsLoadingLocally(false)
     }
 
     if(isLoading || !userData.token) return <LoadingPage />
@@ -35,7 +60,7 @@ export default function Subscribe() {
             <AnimateSharedLayout>{
                 selectionStage
                     ? <AnimatePresence><AddressCard key={2} setSelectionStage={setSelectionStage} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
-                    : <AnimatePresence><SignCard key={1} type={type} setSelectedPlanData={setSelectedPlanData} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
+                    : <AnimatePresence><SignCard key={1} type={type} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
             }</AnimateSharedLayout>
 
             <NextButton
@@ -47,9 +72,17 @@ export default function Subscribe() {
                         setSelectionStage(prev => prev + 1)
                     }
                 }}
-            >
-                { selectionStage ? "Finalizar" : "Próximo" }
-            </NextButton>
+            >{
+                isLoadingLocally
+                    ? <Spinner color="#fff" size={20} />
+                    : selectionStage ? "Finalizar" : "Próximo"
+            }</NextButton>
+            <Alert 
+                isOpen={alertManagementData.isActive}
+                message={alertManagementData.message}
+                toggle={(boolean) => setAlertManagementData(prev => ({
+                    ...prev,
+                    isActive: boolean }))} />
         </PlansContainer>
     )
 }

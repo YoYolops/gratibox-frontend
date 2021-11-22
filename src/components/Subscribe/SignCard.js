@@ -7,7 +7,7 @@ import DropDown from "./DropDown";
 import Selector from "./Selector";
 
 
-export default function SignCard({ type, setSelectedPlanData, setPrevData, prevData }) {
+export default function SignCard({ type, setPrevData, prevData }) {
     const [ planType, setPlanType ] = useState(prevData.signCard.planType || type)
     const [ deliveryDay, setDeliveryDay ] = useState(prevData.signCard.deliveryDay || 0)
     const [ products, setProducts ] = useState(prevData.signCard.products || {
@@ -27,7 +27,6 @@ export default function SignCard({ type, setSelectedPlanData, setPrevData, prevD
                 return null;
             }).filter(Boolean)
         }
-        setSelectedPlanData(selectedPlanData)
 
         return () => { setPrevData(prev => ({
             ...prev,
@@ -38,7 +37,7 @@ export default function SignCard({ type, setSelectedPlanData, setPrevData, prevD
             }
         }))}
 
-    }, [ planType, deliveryDay, products, setPrevData, setSelectedPlanData ])
+    }, [ planType, deliveryDay, products, setPrevData ])
 
     return (
         <SignCardContainer
