@@ -22,7 +22,7 @@ export default function Subscribe() {
     }, [ navigate, userData, isLoading ])
 
     function submitSignatureRequest() {
-
+        
     }
 
     if(isLoading || !userData.token) return <LoadingPage />

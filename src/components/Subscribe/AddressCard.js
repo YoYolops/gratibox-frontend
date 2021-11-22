@@ -39,7 +39,7 @@ export default function AddressCard({ setSelectionStage, setPrevData, prevData }
             uf,
             complement
         }
-    })), [ addressee, address, cep, city, uf, complement ])
+    })), [ addressee, address, cep, city, uf, complement, setPrevData ])
 
     function searchCep(cep) {
         if(cep.length !== 8) return;

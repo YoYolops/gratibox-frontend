@@ -24,6 +24,7 @@ export default function SignCard({ type, setSelectedPlanData, setPrevData, prevD
             day: deliveryDay,
             productId: mapableProducts.map(key => {
                 if(products[key].selected) return products[key].productId
+                return null;
             }).filter(Boolean)
         }
         setSelectedPlanData(selectedPlanData)
@@ -37,7 +38,7 @@ export default function SignCard({ type, setSelectedPlanData, setPrevData, prevD
             }
         }))}
 
-    }, [ planType, deliveryDay, products ])
+    }, [ planType, deliveryDay, products, setPrevData, setSelectedPlanData ])
 
     return (
         <SignCardContainer

@@ -22,7 +22,7 @@ export default function Selector({ initialValue, onSelect, optionText, products,
         if(!unique) {
             setAllowUnselect(calculateHowManyProductsAreSelected() > 1)
         }
-    }, [ products ])
+    }, [ products, unique ])
 
     return (
         <SelectorContainer onClick={() => {

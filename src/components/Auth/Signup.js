@@ -14,20 +14,8 @@ export default function Signup(props) {
     const [ password, setPassword ] = useState("");
     const [ passwordConfirmation, setPasswordConfirmation ] = useState("");
     const [ isLoading, setIsLoading ] = useState(false);
-    
-    const submitForm = useCallback(e => {
-        if(e.key === "Enter"){
-            register()
-        }
-    }, [ register ])
-
-    useEffect(()=> {
-        document.addEventListener("keydown", submitForm)   
-
-        return () => document.removeEventListener('keydown', submitForm) 
-    }, [ submitForm ])
-
-    function register() {
+   
+    const register = useCallback(() => {
         const validationResult = Validate.registerBody({
             name,
             email,
@@ -57,7 +45,20 @@ export default function Signup(props) {
                     setIsLoading(false)
                 }
             })
-    }
+    }, [ name, email, password, setOpenAlert, setAlertMessage, setIsLoading, passwordConfirmation, props ])
+
+    const submitForm = useCallback(e => {
+        if(e.key === "Enter"){
+            register()
+        }
+    }, [ register ])
+
+    useEffect(()=> {
+        document.addEventListener("keydown", submitForm)   
+
+        return () => document.removeEventListener('keydown', submitForm) 
+    }, [ submitForm ])
+
 
     return (
         <SignupContainer

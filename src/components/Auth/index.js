@@ -12,7 +12,7 @@ export default function Auth({ hasAccount }) {
 
     useEffect(() => {
         if(!isLoading && userData.token) navigate("/plans")
-    }, [ userData, isLoading ])
+    }, [ userData, isLoading, navigate ])
 
     function toggleHandler() {
         setToggleControl(prevState => !prevState)
