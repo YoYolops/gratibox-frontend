@@ -14,7 +14,7 @@ export default function Subscribe() {
     const { userData, isLoading } = useContext(UserContext)
     const [ selectedPlanData, setSelectedPlanData ] = useState()
     const [ selectionStage, setSelectionStage ] = useState(0)
-    const [ prevData, setPrevData ] = useState({})
+    const [ prevData, setPrevData ] = useState({ signCard: {}, addressCard: {} })
     const { type } = useParams();
 
     useEffect(() => {

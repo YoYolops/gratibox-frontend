@@ -8,9 +8,9 @@ import Selector from "./Selector";
 
 
 export default function SignCard({ type, setSelectedPlanData, setPrevData, prevData }) {
-    const [ planType, setPlanType ] = useState(prevData.planType || type)
-    const [ deliveryDay, setDeliveryDay ] = useState(prevData.deliveryDay || 0)
-    const [ products, setProducts ] = useState(prevData.products || {
+    const [ planType, setPlanType ] = useState(prevData.signCard.planType || type)
+    const [ deliveryDay, setDeliveryDay ] = useState(prevData.signCard.deliveryDay || 0)
+    const [ products, setProducts ] = useState(prevData.signCard.products || {
         incense: { productId: 1, selected: true },
         tea: { productId: 2, selected: false },
         organicProducts: { productId:3, selected: false }
@@ -28,16 +28,16 @@ export default function SignCard({ type, setSelectedPlanData, setPrevData, prevD
         }
         setSelectedPlanData(selectedPlanData)
 
-    }, [ planType, deliveryDay, products ])
+        return () => { setPrevData(prev => ({
+            ...prev,
+            signCard: {
+                planType,
+                deliveryDay,
+                products
+            }
+        }))}
 
-    // Return in a separate use effect will run only once, in the above, it would run every time one of the dependencies change
-    useEffect(() => () => {
-        setPrevData({
-            planType,
-            deliveryDay,
-            products
-        })
-    }, [])
+    }, [ planType, deliveryDay, products ])
 
     return (
         <SignCardContainer

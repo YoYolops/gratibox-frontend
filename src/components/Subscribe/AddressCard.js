@@ -2,20 +2,51 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import Lottie from "react-lottie";
 import animation from "../../assets/addressMeditation.json";
+import loadingAnimation from "../../assets/loadingBallAnimation.json";
 import { AiOutlineArrowLeft } from "react-icons/ai";
 import { useState, useEffect } from "react";
 import { getCepData } from "../../services/brasilApi";
+import Alert from "../Alert";
 
 export default function AddressCard({ setSelectionStage }) {
+    const [ blockChanges, setBlockChanges ] = useState(false)
+    const [ alertActive, setAlertActive ] = useState(false)
+    const [ alertMessage, setAlertMessage ] = useState("")
     const [ isLoading, setIsLoading ] = useState(false)
     const [ addresse, setAddresse ] = useState("")
     const [ address, setAddress ] = useState("")
     const [ cep, setCep ] = useState("")
     const [ city, setCity ] = useState("")
-    const [ uf, setUf ] = useState("")
+    const [ uf, setUf ] = useState("PB")
+    const [ complement, setComplement ] = useState("")
 
-    function searchCep() {
+    const defaultOptions = {
+        loop: true,
+        autoplay: true, 
+        animationData: isLoading ? loadingAnimation : animation,
+        rendererSettings: {
+          preserveAspectRatio: 'xMidYMid slice'
+        }
+    };
 
+    function searchCep(cep) {
+        if(cep.length !== 8) return;
+        setIsLoading(true)
+        getCepData(cep)
+            .then(result => {
+                if(!result.succeeded) {
+                    setAlertMessage("Nossa aura não detectou esse CEP")
+                    setAlertActive(true)
+                    setBlockChanges(false)
+                    setIsLoading(false)
+                    return;
+                }
+                setUf(result.data.state)
+                setCity(result.data.city)
+                setAddress(result.data.street.length ? `${result.data.street}, ${result.data.neighborhood}` : "" )
+                setBlockChanges(true)
+                setIsLoading(false)
+            })
     }
 
     return (
@@ -46,7 +77,10 @@ export default function AddressCard({ setSelectionStage }) {
                 <input 
                     type="text"
                     placeholder="CEP"
-                    onChange={ e => setCep(e.target.value) }
+                    onChange={ e => {
+                        searchCep(e.target.value)
+                        setCep(e.target.value)
+                    }}
                     disabled={isLoading}
                     value={cep}
                 />
@@ -54,19 +88,25 @@ export default function AddressCard({ setSelectionStage }) {
                     type="text"
                     placeholder="Endereço de Entrega"
                     onChange={ e => setAddress(e.target.value) }
-                    disabled={isLoading}
+                    disabled={isLoading || address.length !== 0}
                     value={address}
+                />
+                <input 
+                    type="text"
+                    placeholder="Complemento"
+                    onChange={ e => setComplement(e.target.value) }
+                    disabled={isLoading}
+                    value={complement}
                 />
                 <div className="CityState">
                     <input 
                         type="text"
                         placeholder="Cidade"
-                        onChange={ e => setAddresse(e.target.value) }
-                        disabled={isLoading}
+                        onChange={ e => setCity(e.target.value) }
+                        disabled={isLoading || blockChanges}
                         value={city}
                     />
-                    <select name="UF" onChange={e => setUf(e.target.value)} >
-                        <option value="" disabled selected>UF</option>
+                    <select name="UF" defaultValue={uf} disabled={isLoading || blockChanges}  onChange={e => setUf(e.target.value)} >
                         <option value="AC">AC</option>
                         <option value="AL">AL</option>
                         <option value="AM">AM</option>
@@ -101,6 +141,7 @@ export default function AddressCard({ setSelectionStage }) {
             <AiOutlineArrowLeft size={30} color="#4D65A8" onClick={() => {
                 setSelectionStage(0)
             }}/>
+            <Alert isOpen={alertActive} toggle={setAlertActive} message={alertMessage} />
         </AddressCardContainer>
     )
 }
@@ -111,7 +152,7 @@ const AddressCardContainer = styled(motion.div)`
     border-radius: 10px;
     padding: 0px 20px 10px 20px;
     margin-bottom: 20px;
-
+    
     >div {
         >input {
             width: 100%;
@@ -174,11 +215,3 @@ const UpperSection = styled.div`
     }
 `
 
-const defaultOptions = {
-    loop: true,
-    autoplay: true, 
-    animationData: animation,
-    rendererSettings: {
-      preserveAspectRatio: 'xMidYMid slice'
-    }
-};

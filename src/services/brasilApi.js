@@ -1,12 +1,13 @@
 import axios from "axios";
 
 const BrasilCepApi = axios.create({
-    baseURL: "https://brasilapi.com.br/api/cep/v1/"
+    baseURL: "https://brasilapi.com.br/api/cep/v2/"
 })
 
 async function getCepData(cep) {
     try {
         const response = await BrasilCepApi.get(cep)
+        console.log(response)
 
         return {
             succeeded: true,
@@ -15,7 +16,7 @@ async function getCepData(cep) {
     } catch(e) {
         return {
             succeeded: false,
-            response: e.message
+            message: e.message
         }
     }
 }

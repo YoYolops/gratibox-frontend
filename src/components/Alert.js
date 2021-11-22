@@ -49,10 +49,11 @@ const variants = {
 }
 
 const AlertContainer = styled(motion.div)`
-    width: 95%;
+    width: 100%;
     max-width: 600px;
     position: fixed;
     top: 10px;
+    left: 0px;
     background-color: #f74f4f;
     color: #fff;
     border-radius: 4px;
