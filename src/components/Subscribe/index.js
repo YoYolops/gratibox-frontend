@@ -34,7 +34,7 @@ export default function Subscribe() {
             
             <AnimateSharedLayout>{
                 selectionStage
-                    ? <AnimatePresence><AddressCard key={2} setSelectionStage={setSelectionStage}/></AnimatePresence>
+                    ? <AnimatePresence><AddressCard key={2} setSelectionStage={setSelectionStage} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
                     : <AnimatePresence><SignCard key={1} type={type} setSelectedPlanData={setSelectedPlanData} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
             }</AnimateSharedLayout>
 

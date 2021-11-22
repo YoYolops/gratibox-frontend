@@ -8,17 +8,17 @@ import { useState, useEffect } from "react";
 import { getCepData } from "../../services/brasilApi";
 import Alert from "../Alert";
 
-export default function AddressCard({ setSelectionStage }) {
+export default function AddressCard({ setSelectionStage, setPrevData, prevData }) {
     const [ blockChanges, setBlockChanges ] = useState(false)
     const [ alertActive, setAlertActive ] = useState(false)
     const [ alertMessage, setAlertMessage ] = useState("")
     const [ isLoading, setIsLoading ] = useState(false)
-    const [ addresse, setAddresse ] = useState("")
-    const [ address, setAddress ] = useState("")
-    const [ cep, setCep ] = useState("")
-    const [ city, setCity ] = useState("")
-    const [ uf, setUf ] = useState("PB")
-    const [ complement, setComplement ] = useState("")
+    const [ addressee, setAddressee ] = useState(prevData.addressCard.addressee || "")
+    const [ address, setAddress ] = useState(prevData.addressCard.address || "")
+    const [ cep, setCep ] = useState(prevData.addressCard.cep || "")
+    const [ city, setCity ] = useState(prevData.addressCard.city || "")
+    const [ uf, setUf ] = useState(prevData.addressCard.addressee || "PB")
+    const [ complement, setComplement ] = useState(prevData.addressCard.addressee || "")
 
     const defaultOptions = {
         loop: true,
@@ -28,6 +28,18 @@ export default function AddressCard({ setSelectionStage }) {
           preserveAspectRatio: 'xMidYMid slice'
         }
     };
+
+    useEffect(() => () => setPrevData(prev => ({
+        ...prev,
+        addressCard: {
+            addressee,
+            address,
+            cep,
+            city,
+            uf,
+            complement
+        }
+    })), [ addressee, address, cep, city, uf, complement ])
 
     function searchCep(cep) {
         if(cep.length !== 8) return;
@@ -70,9 +82,9 @@ export default function AddressCard({ setSelectionStage }) {
                 <input 
                     type="text"
                     placeholder="Nome Completo"
-                    onChange={ e => setAddresse(e.target.value) }
+                    onChange={ e => setAddressee(e.target.value) }
                     disabled={isLoading}
-                    value={addresse}
+                    value={addressee}
                 />
                 <input 
                     type="text"
