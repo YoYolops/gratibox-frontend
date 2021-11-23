@@ -13,6 +13,8 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
         }
     };
 
+    console.log(signature)
+
     function calculateNextDeliveries() {
         let first;
         let second;
@@ -74,15 +76,14 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
                 <main>
                     <p>Plano: <span>{signature.type === "s" ? "Semanal" : "Mensal"}</span></p>
                     <p>Data da assinatura: <span>{Utils.formatDate(signature.created_at)}</span></p>
-                </main>
-                <footer>
                     <p className="Title">Próximas Entregas:</p>
-
-
                     {
                         calculateNextDeliveries().map((item, index) => <p key={index} className="NextDelivery">{item}</p>)
                     }
-                </footer>
+                </main>
+                <footer>{
+                    signature.products.map(product => <p className="Product">{product}</p>)
+                }</footer>
             </section>
         </PlanCardContainer>
     )
@@ -127,14 +128,23 @@ const PlanCardContainer = styled(motion.div)`
                     color: #E63C80;
                 }
             }
+
+            .NextDelivery {
+                color: #E63C80;
+                margin: 5px 0px 5px 20px;
+            }
         }
 
         >footer {
             width: 100%;
-            
-            .NextDelivery {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+
+            .Product {
                 color: #E63C80;
-                margin: 5px 0px 5px 20px;
+                margin-bottom: 0px;
+                margin-top: 10px;
             }
         }
     }

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router";
 import { PlansContainer } from "../../sharedStyles";
 import LoadingPage from "../LoadingPage";
 import animation from "../../assets/signaturesMeditation.json";
+import LogoutFooter from "../LogoutFooter";
 
 export default function UserSignature() {
     const navigate = useNavigate()
@@ -28,6 +29,8 @@ export default function UserSignature() {
                     <UserSignatureCard key={signature.id} jsonAnimation={animation} signature={signature}  />
                 ))
             }
+
+            <LogoutFooter />
         </PlansContainer>
     )
 }

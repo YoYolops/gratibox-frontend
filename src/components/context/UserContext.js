@@ -47,6 +47,13 @@ export function UserProvider({ children }) {
         localStorage.setItem("gratibox", JSON.stringify(data))
     }
 
+    function resetApp() {
+        localStorage.removeItem("gratibox")
+        setUserData({})
+        setSignatureData([])
+        navigate("/")
+    }
+
 
     return (
         <UserContext.Provider value={{
@@ -54,7 +61,8 @@ export function UserProvider({ children }) {
             storeUserDataLocally,
             setUserData,
             isLoading,
-            signatureData
+            signatureData,
+            resetApp
         }}>
             {children}
         </UserContext.Provider>
