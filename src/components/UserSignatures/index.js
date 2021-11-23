@@ -14,7 +14,7 @@ export default function UserSignature() {
         if(!isLoading && !userData.token) navigate("/auth/log")
         else if(!isLoading && !signatureData.length) navigate("/plans")
         
-    }, [ navigate, userData, isLoading ])
+    }, [ navigate, userData, isLoading, signatureData ])
 
     if(isLoading || !userData.token) return <LoadingPage />
 

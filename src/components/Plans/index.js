@@ -9,14 +9,15 @@ import LoadingPage from "../LoadingPage";
 
 export default function Plans() {
     const navigate = useNavigate()
-    const { userData, isLoading } = useContext(UserContext)
+    const { userData, isLoading, signatureData } = useContext(UserContext)
     const weeklyText = "Você recebe um box por semana, ideal para quem quer exercer a gratidão todos os dias"
     const monthlyText = "Você recebe um box por mês, ideal para quem está começando agora"
 
     useEffect(() => {
         if(!isLoading && !userData.token) navigate("/auth/log")
+        else if(!isLoading && signatureData.length) navigate("/signatures/")
         
-    }, [ navigate, userData, isLoading ])
+    }, [ navigate, userData, isLoading, signatureData ])
 
     if(isLoading || !userData.token) return <LoadingPage />
 

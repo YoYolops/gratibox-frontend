@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import styled from "styled-components";
 import Lottie from "react-lottie";
 import { motion } from "framer-motion";
@@ -15,6 +14,10 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
     };
 
     function calculateNextDeliveries() {
+        let first;
+        let second;
+        let third;
+        const today = new Date();
         const days = [ "Monday", "Wednesday", "Friday" ]
         const monthDays = {
             "0": 1,
@@ -25,9 +28,15 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
         const dayName = days[Number(signature.day)]
         const monthDay = monthDays[signature.day]
 
-        const first = Utils.getNextDayOfTheWeek(dayName, true)
-        const second = Utils.getNextDayOfTheWeek(dayName, true, new Date(first))
-        const third = Utils.getNextDayOfTheWeek(dayName, true, new Date(second))
+        if(signature.type === "s") {
+            first = Utils.getNextDayOfTheWeek(dayName, true)
+            second = Utils.getNextDayOfTheWeek(dayName, true, new Date(first))
+            third = Utils.getNextDayOfTheWeek(dayName, true, new Date(second))
+        } else {
+            first = Utils.calculateNextDeliveryDay(today, monthDay)
+            second = Utils.calculateNextDeliveryDay(first, monthDay)
+            third = Utils.calculateNextDeliveryDay(second, monthDay)
+        }
 
         const results = [
             first,
@@ -71,7 +80,7 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
 
 
                     {
-                        calculateNextDeliveries().map(item => <p className="NextDelivery">{item}</p>)
+                        calculateNextDeliveries().map((item, index) => <p key={index} className="NextDelivery">{item}</p>)
                     }
                 </footer>
             </section>

@@ -2,7 +2,8 @@ import dayjs from "dayjs";
 
 const Utils = {
     formatDate,
-    getNextDayOfTheWeek
+    getNextDayOfTheWeek,
+    calculateNextDeliveryDay
 }
 
 function formatDate(inputDate) {
@@ -24,5 +25,23 @@ function getNextDayOfTheWeek(dayName, excludeToday = true, refDate = new Date())
     );
     return refDate;
 }
+
+function calculateNextDeliveryDay(referenceObj, deliveryDay) {
+    const reference = new Date(referenceObj)
+    let nextDeliveryDay
+    // delivery day of current month already passed?
+    if(reference.getDate() >= deliveryDay) {
+        if(reference.getMonth() === 11) {         
+            nextDeliveryDay = new Date(reference.getFullYear()+1, 0, deliveryDay)        
+        } else {      
+            nextDeliveryDay = new Date(reference.getFullYear(), reference.getMonth()+1, deliveryDay)           
+        }
+    } else {       
+        nextDeliveryDay = new Date(reference.getFullYear(), reference.getMonth(), deliveryDay)        
+    }
+    return nextDeliveryDay
+}
+
+
 
 export default Utils;

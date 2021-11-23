@@ -37,7 +37,7 @@ export function UserProvider({ children }) {
             })
         }
         setIsSignatureDataLoading(false)
-    }, [ userData ])
+    }, [ userData, navigate ])
 
     useEffect(() => {
         if(!isUserDataLoading && !isSignatureDataLoading) setIsLoading(false)
