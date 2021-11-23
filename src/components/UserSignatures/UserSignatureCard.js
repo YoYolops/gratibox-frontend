@@ -13,8 +13,6 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
         }
     };
 
-    console.log(signature)
-
     function calculateNextDeliveries() {
         let first;
         let second;
@@ -82,7 +80,7 @@ export default function UserSignatureCard({ jsonAnimation, signature }) {
                     }
                 </main>
                 <footer>{
-                    signature.products.map(product => <p className="Product">{product}</p>)
+                    signature.products.map((product, index) => <p key={index} className="Product">{product}</p>)
                 }</footer>
             </section>
         </PlanCardContainer>

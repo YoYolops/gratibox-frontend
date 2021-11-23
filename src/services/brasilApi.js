@@ -7,7 +7,6 @@ const BrasilCepApi = axios.create({
 async function getCepData(cep) {
     try {
         const response = await BrasilCepApi.get(cep)
-        console.log(response)
 
         return {
             succeeded: true,

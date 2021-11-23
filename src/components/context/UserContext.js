@@ -26,7 +26,6 @@ export function UserProvider({ children }) {
         if(userData.token) {
             Signature.getUserSignature(userData.token)
             .then(res => {
-                console.log(res)
                 if(res.succeeded) {
                     setSignatureData(res.data)
                     setIsSignatureDataLoading(false)
