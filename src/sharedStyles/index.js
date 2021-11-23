@@ -28,4 +28,9 @@ export const PlansContainer = styled.div`
         text-align: left;
         line-height: 1.2rem;
     }
+
+    a {
+        font-size: 1.3rem;
+        border-bottom: 2px solid #fff;
+    }
 `

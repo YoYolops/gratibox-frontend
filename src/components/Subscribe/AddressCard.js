@@ -90,6 +90,7 @@ export default function AddressCard({ setSelectionStage, setPrevData, prevData, 
                     type="text"
                     placeholder="CEP"
                     onChange={ e => {
+                        if(e.target.value.length > 8) return;
                         searchCep(e.target.value)
                         setCep(e.target.value)
                     }}

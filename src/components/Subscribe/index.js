@@ -72,7 +72,8 @@ export default function Subscribe() {
                     })
                     setIsLoadingLocally(false)
                 } else {
-                    navigate("/")
+                    
+                    navigate("/signatures")
                 }
             })
     }

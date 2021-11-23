@@ -29,7 +29,6 @@ export function UserProvider({ children }) {
                 if(res.succeeded) {
                     setSignatureData(res.data)
                     setIsSignatureDataLoading(false)
-                    navigate("/signatures/")
                 } else {
                     setIsSignatureDataLoading(false)
                 }
