@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { getCepData } from "../../services/brasilApi";
 import Alert from "../Alert";
 
-export default function AddressCard({ setSelectionStage, setPrevData, prevData }) {
+export default function AddressCard({ setSelectionStage, setPrevData, prevData, forceLoading }) {
     const [ blockChanges, setBlockChanges ] = useState(false)
     const [ alertActive, setAlertActive ] = useState(false)
     const [ alertMessage, setAlertMessage ] = useState("")
@@ -23,7 +23,7 @@ export default function AddressCard({ setSelectionStage, setPrevData, prevData }
     const defaultOptions = {
         loop: true,
         autoplay: true, 
-        animationData: isLoading ? loadingAnimation : animation,
+        animationData: isLoading || forceLoading ? loadingAnimation : animation,
         rendererSettings: {
           preserveAspectRatio: 'xMidYMid slice'
         }

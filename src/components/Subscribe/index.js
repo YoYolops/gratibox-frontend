@@ -11,6 +11,7 @@ import AddressCard from "./AddressCard";
 import Validate from "../../services/validate";
 import Alert from "../Alert";
 import Spinner from "../Spinner";
+import Signature from "../../services/signature";
 
 export default function Subscribe() {
     const [ isLoadingLocally, setIsLoadingLocally ] = useState(false)
@@ -42,12 +43,38 @@ export default function Subscribe() {
             }).filter(Boolean),
         }
 
-        const emptinessValidation = Validate.emptyness(body)
-        if(!emptinessValidation.isValid) setAlertManagementData({
-            isActive: true,
-            message: "Preencha todos os campos obrigatórios"
-        })
-        setIsLoadingLocally(false)
+        const validationBody = { ...body }
+        delete validationBody.complement
+        const emptinessValidation = Validate.emptyness(validationBody)
+        if(!emptinessValidation.isValid) {
+            setAlertManagementData({
+                isActive: true,
+                message: "Preencha todos os campos obrigatórios"
+            })
+            setIsLoadingLocally(false)
+            return;
+        }
+        if(body.cep.length !== 8) {
+            setAlertManagementData({
+                isActive: true,
+                message: "Esse CEP não existe"
+            })
+            setIsLoadingLocally(false)
+            return;
+        }
+
+        Signature.submit(userData.token, body)
+            .then(res => {
+                if(!res.succeeded) {
+                    setAlertManagementData({
+                        isActive: true,
+                        message: res.message
+                    })
+                    setIsLoadingLocally(false)
+                } else {
+                    navigate("/")
+                }
+            })
     }
 
     if(isLoading || !userData.token) return <LoadingPage />
@@ -59,7 +86,7 @@ export default function Subscribe() {
             
             <AnimateSharedLayout>{
                 selectionStage
-                    ? <AnimatePresence><AddressCard key={2} setSelectionStage={setSelectionStage} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
+                    ? <AnimatePresence><AddressCard key={2} setSelectionStage={setSelectionStage} prevData={prevData} setPrevData={setPrevData} forceLoading={isLoadingLocally} /></AnimatePresence>
                     : <AnimatePresence><SignCard key={1} type={type} prevData={prevData} setPrevData={setPrevData} /></AnimatePresence>
             }</AnimateSharedLayout>
 

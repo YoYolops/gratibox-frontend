@@ -5,14 +5,6 @@ const Sign = {
     Up
 }
 
-function createHeader(token) {
-    return {
-        headers: {
-            Authorization: `Bearer ${token}`
-        }
-    }
-}
-
 async function In(body) {
     try {
         const response = await Api.post("/login", body)

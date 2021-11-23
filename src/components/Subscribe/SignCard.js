@@ -17,16 +17,6 @@ export default function SignCard({ type, setPrevData, prevData }) {
     })
 
     useEffect(() => {
-        const mapableProducts = Object.keys(products)
-
-        const selectedPlanData = {
-            planId: planType === "weekly" ? 1 : 0,
-            day: deliveryDay,
-            productId: mapableProducts.map(key => {
-                if(products[key].selected) return products[key].productId
-                return null;
-            }).filter(Boolean)
-        }
 
         return () => { setPrevData(prev => ({
             ...prev,

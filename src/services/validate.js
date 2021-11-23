@@ -30,7 +30,7 @@ function registerBody(body) {
 
 function emptyness(body) {
     for(const key in body) {
-        if(!body[key] || `${body[key]}`.trim() === "") return {
+        if((!body[key] || `${body[key]}`.trim() === "") && body[key] !== 0) return {
             isValid: false,
             message: "Preencha todos os campos"
         }
