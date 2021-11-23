@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Api = axios.create({
-    baseURL: "http://localhost:4000"
+    baseURL: "https://gratiboxf.herokuapp.com"
 })
 
 export default Api;
