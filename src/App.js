@@ -5,6 +5,7 @@ import { UserProvider } from "./components/context/UserContext";
 import Plans from "./components/Plans";
 import LoadingScreen from "./components/LoadingPage";
 import Subscribe from "./components/Subscribe";
+import UserSignature from "./components/UserSignatures";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
           <Route exact path="/auth/sign" element={<Auth hasAccount={false}/>} />
           <Route exact path="/plans" element={<Plans />} />
           <Route path="/subscribe/:type" element={<Subscribe />}/>
+          <Route exact path="/signatures/" element={<UserSignature />} />
           <Route exact path="/loading" element={<LoadingScreen />} />
         </Routes>
       </UserProvider>

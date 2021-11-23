@@ -1,12 +1,16 @@
 import { createContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import Signature from "../../services/signature";
 
 const UserContext = createContext({});
 
 export function UserProvider({ children }) {
     const navigate = useNavigate()
     const [ isLoading, setIsLoading ] = useState(true)
+    const [ isSignatureDataLoading, setIsSignatureDataLoading ] = useState(true)
+    const [ isUserDataLoading, setIsUserDataLoading ] = useState(true)
     const [ userData, setUserData ] = useState({})
+    const [ signatureData, setSignatureData ] = useState([])
 
     useEffect(() => {
         const storagedData = localStorage.getItem("gratibox");
@@ -14,10 +18,30 @@ export function UserProvider({ children }) {
         if(storagedData) {
             const data = JSON.parse(storagedData)
             setUserData(data)
-            setIsLoading(false)
         }
-        setIsLoading(false)
-    }, [ navigate ])
+        setIsUserDataLoading(false)
+    }, [])
+
+    useEffect(() => {
+        if(userData.token) {
+            Signature.getUserSignature(userData.token)
+            .then(res => {
+                console.log(res)
+                if(res.succeeded) {
+                    setSignatureData(res.data)
+                    setIsSignatureDataLoading(false)
+                    navigate("/signatures/")
+                } else {
+                    setIsSignatureDataLoading(false)
+                }
+            })
+        }
+        setIsSignatureDataLoading(false)
+    }, [ userData ])
+
+    useEffect(() => {
+        if(!isUserDataLoading && !isSignatureDataLoading) setIsLoading(false)
+    }, [ isUserDataLoading, isSignatureDataLoading, setIsLoading ])
 
     function storeUserDataLocally(data) {
         localStorage.setItem("gratibox", JSON.stringify(data))
@@ -29,7 +53,8 @@ export function UserProvider({ children }) {
             userData,
             storeUserDataLocally,
             setUserData,
-            isLoading
+            isLoading,
+            signatureData
         }}>
             {children}
         </UserContext.Provider>

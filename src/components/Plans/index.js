@@ -15,6 +15,7 @@ export default function Plans() {
 
     useEffect(() => {
         if(!isLoading && !userData.token) navigate("/auth/log")
+        
     }, [ navigate, userData, isLoading ])
 
     if(isLoading || !userData.token) return <LoadingPage />

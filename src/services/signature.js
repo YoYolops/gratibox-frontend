@@ -1,7 +1,8 @@
 import Api from "./api";
 
 const Signature = {
-    submit
+    submit,
+    getUserSignature
 }
 
 function createHeader(token) {
@@ -15,6 +16,21 @@ function createHeader(token) {
 async function submit(token, body) {
     try {
         const response = await Api.post("/signature", body, createHeader(token))
+        return {
+            succeeded: true,
+            data: response.data
+        }
+    } catch(e) {
+        return {
+            succeeded: false,
+            message: e.message
+        }
+    }
+}
+
+async function getUserSignature(token) {
+    try {
+        const response = await Api.get("/signature", createHeader(token))
         return {
             succeeded: true,
             data: response.data

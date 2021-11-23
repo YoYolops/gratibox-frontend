@@ -33,7 +33,7 @@ export default function Subscribe() {
         const body = {
             userId: userData.id,
             addressee: prevData.addressCard.addressee,
-            planId: prevData.signCard.planType === "weekly" ? 1 : 0,
+            planId: prevData.signCard.planType === "weekly" ? 1 : 2,
             cep: prevData.addressCard.cep,
             day: prevData.signCard.deliveryDay,
             complement: prevData.addressCard.complement,
