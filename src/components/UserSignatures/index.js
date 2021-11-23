@@ -16,14 +16,14 @@ export default function UserSignature() {
         if(!isLoading && !userData.token) navigate("/auth/log")
     }, [ navigate, userData, isLoading, signatureData ])
 
-    if(isLoading || !userData.token) return <LoadingPage />
+    if(isLoading || !userData.token || !signatureData.length) return <LoadingPage />
 
     return (
         <PlansContainer>
             <h1>{`Bom te ver por aqui, ${userData.name?.split(" ")[0]}`}</h1>
             <h2>{
-                signatureData.length
-                    ? "Agradecer é a arte de atrair coisas boas"
+                signatureData.length 
+                    ? '"Agradecer é a arte de atrair coisas boas"'
                     : "Você não possui assinaturas ainda"
             }</h2>
 
